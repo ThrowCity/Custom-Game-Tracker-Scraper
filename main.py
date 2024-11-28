@@ -1,8 +1,10 @@
 import io
 import bs4
+import json
 import pandas as pd
+from sys import argv, stdout
 
-filepath = input()
+filepath = argv[1]
 
 with open(filepath) as f:
     bs = bs4.BeautifulSoup(f, 'html.parser')
@@ -12,7 +14,7 @@ usernames = bs.select("span.trn-ign__username")
 agentels = bs.select("div.image>img")
 agents = [i.attrs['alt'] for i in agentels][::2]
 
-columns = ["Name", "Agent", "ACS", "Kills", "Deaths", "Assists", "ADR", "HS%", "FB", "FD", "KAST", "Plants", "Deaths", "Econ"]
+columns = ["Name", "Agent", "ACS", "Kills", "Deaths", "Assists", "ADR", "HS%", "FB", "FD", "KAST", "Plants", "Defuses", "Econ"]
 positions = [2, 3, 4, 5, 9, 10, 12, 13, 11]
 data = []
 
@@ -24,23 +26,5 @@ for i in range(10):
     row2append += [0, 0, 0]
     data.append(row2append)
 
-final_frame = pd.DataFrame(data=data, columns=columns)
-
-print(final_frame)
-
-### if its indented its in the trackergg, but not used for us
-# 2 acs
-# 3 kills
-# 4 deaths
-# 5 assists
-#    6 positive
-#    7 kd
-#    8 ddr
-# 9 adr
-# 10 hs%
-# 11 kast
-# 12 fk
-# 13 fd
-#    14 mk
-
-# C:\Users\qlels\Downloads\trackergame\i.htm
+print(json.dumps(data))
+input()

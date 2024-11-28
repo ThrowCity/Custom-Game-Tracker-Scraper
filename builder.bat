@@ -1,0 +1,1 @@
+pyinstaller main.py -n data_manager --specpath OutputTests --workpath OutputTests/work --distpath OutputTests -F --clean -w
