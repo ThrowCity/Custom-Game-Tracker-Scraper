@@ -1,2 +1,3 @@
-# Tracker-Custom-Stats
+# Custom-Game-Tracker-Scraper
  
+Uses BeautifulSoup4!
