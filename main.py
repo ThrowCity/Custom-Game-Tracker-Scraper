@@ -1,5 +1,6 @@
 import io
 import bs4
+import pandas as pd
 
 filepath = input()
 
@@ -11,24 +12,35 @@ usernames = bs.select("span.trn-ign__username")
 agentels = bs.select("div.image>img")
 agents = [i.attrs['alt'] for i in agentels][::2]
 
-final = []
+columns = ["Name", "Agent", "ACS", "Kills", "Deaths", "Assists", "ADR", "HS%", "FB", "FD", "KAST", "Plants", "Deaths", "Econ"]
+positions = [2, 3, 4, 5, 9, 10, 12, 13, 11]
+data = []
 
 for i in range(10):
-    ###                  username           agent             acs                       kills                      deaths                  assists                     adr                       hs%                           kast                        fb                      fd                    mulitkills
-    final.append(f"{usernames[i+1].text},{agents[i]},{values[2 + 13*(i)].text},{values[3 + 13*(i)].text},{values[4+ 13*(i)].text},{values[5 + 13*(i)].text},{values[9 + 13*(i)].text},{values[10 + 13*(i)].text},{values[11 + 13*(i)].text},{values[12 + 13*(i)].text},{values[13 + 13*(i)].text},{values[14 + 13*(i)].text}")
-    print(final[i])
+    row2append = [usernames[i+1].text, agents[i]]
+    offset = 13 * i
+    for j in positions:
+        row2append.append(float(values[j + offset].text.strip("%")))
+    row2append += [0, 0, 0]
+    data.append(row2append)
+
+final_frame = pd.DataFrame(data=data, columns=columns)
+
+print(final_frame)
 
 ### if its indented its in the trackergg, but not used for us
-# 3 acs
-# 4 kills
-# 5 deaths
-# 6 assists
-#    7 positive
-#    8 kd
-#    9 ddr
-# 10 adr
-# 11 hs%
-# 12 kast
-# 13 fk
-# 14 fd
-# 15 mk
+# 2 acs
+# 3 kills
+# 4 deaths
+# 5 assists
+#    6 positive
+#    7 kd
+#    8 ddr
+# 9 adr
+# 10 hs%
+# 11 kast
+# 12 fk
+# 13 fd
+#    14 mk
+
+# C:\Users\qlels\Downloads\trackergame\i.htm
