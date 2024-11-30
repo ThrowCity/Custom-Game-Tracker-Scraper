@@ -10,9 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Tracker-Scraper-Visuals"
+config/name="Custom Game Tracker Scraper"
+config/version="1.0"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+run/low_processor_mode=true
+boot_splash/bg_color=Color(0.0117647, 0.0470588, 0.0784314, 1)
+boot_splash/image="res://plushtransparent.png"
+config/icon="res://Logo.png"
 
 [display]
 

@@ -27,4 +27,16 @@ for i in range(10):
     data.append(row2append)
 
 print(json.dumps(data))
-input()
+data_in = input().split(" ")
+
+datanums = [float(i) for i in data_in]
+
+for i in range(10):
+    data[i][2] = datanums[i * 4]
+    data[i][11] = datanums[1 + (i*4)]
+    data[i][12] = datanums[2 + (i*4)]
+    data[i][13] = datanums[3 + (i*4)]
+
+finalframe = pd.DataFrame(data=data, columns=columns)
+finalframe.to_csv("output.csv", index=False)
+print("done")

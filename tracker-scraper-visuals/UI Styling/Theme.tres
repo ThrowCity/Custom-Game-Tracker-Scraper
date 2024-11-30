@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://vceh3k6jr3i"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://vceh3k6jr3i"]
 
 [ext_resource type="FontFile" uid="uid://b1c74cmg4ojat" path="res://UI Styling/IBMPlexSans-Regular.ttf" id="1_23yyb"]
+[ext_resource type="StyleBox" uid="uid://md7muf5gpllj" path="res://UI Styling/Button Disabled.tres" id="2_2awci"]
 [ext_resource type="StyleBox" uid="uid://7khkblq04b4e" path="res://UI Styling/Button Focus.tres" id="2_bn5od"]
 [ext_resource type="StyleBox" uid="uid://cct8poclbvpew" path="res://UI Styling/Button Normal.tres" id="2_iokoc"]
 [ext_resource type="StyleBox" uid="uid://cl4xvcrb1w8v4" path="res://UI Styling/Button Hover.tres" id="3_kakcq"]
@@ -8,7 +9,7 @@
 
 [resource]
 Button/fonts/font = ExtResource("1_23yyb")
-Button/styles/disabled = null
+Button/styles/disabled = ExtResource("2_2awci")
 Button/styles/focus = ExtResource("2_bn5od")
 Button/styles/hover = ExtResource("3_kakcq")
 Button/styles/normal = ExtResource("2_iokoc")

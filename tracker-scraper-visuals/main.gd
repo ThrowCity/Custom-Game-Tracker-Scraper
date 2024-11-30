@@ -5,6 +5,7 @@ var py : Dictionary
 var pystd : FileAccess
 var pypid : int
 var data
+var queue_finish : bool = false
 
 ### Setup ----------------------------------------------------------------------
 
@@ -45,7 +46,20 @@ func _file_dropped(f : PackedStringArray) -> void:
 
 ### Set Stuff ------------------------------------------------------------------
 
-
+func _save_send(gnoc : bool) -> void:
+	queue_finish = gnoc
+	var to_send = ""
+	for i in range(10):
+		to_send += get_node("Running/Scoreboard/" + str(2 + (i * (14)))).text + " "
+		to_send += get_node("Running/Scoreboard/" + str(11 + (i * (14)))).text + " "
+		to_send += get_node("Running/Scoreboard/" + str(12 + (i * (14)))).text + " "
+		to_send += get_node("Running/Scoreboard/" + str(13 + (i * (14)))).text + " "
+	to_send = to_send.rstrip(" ")
+	pystd.store_line(to_send)
+	$Running/ProcessDetails/Heeho/anims.play("blinking")
+	$SecondRefresh.disconnect("timeout", _second_refreshed)
+	$SecondRefresh.connect("timeout", _final_refreshed)
+	return
 
 ### Visual Stuff ---------------------------------------------------------------
 
@@ -58,6 +72,8 @@ func _initial_refresh() -> void:
 		var dstr = pystd.get_line()
 		print(dstr)
 		data = str_to_var(dstr)
+		$"Running/Done Buttons/SnC".disabled = false
+		$"Running/Done Buttons/SnG".disabled = false
 		_create_table()
 		return
 	$Running/ProcessDetails/Heeho.self_modulate = Color.RED
@@ -70,8 +86,27 @@ func _second_refreshed() -> void:
 	$Running/ProcessDetails/Heeho.self_modulate = Color.RED
 	return
 
+func _final_refreshed() -> void:
+	if pystd.get_line() == "done":
+		$"Running/Done Buttons/SnC".disabled = true
+		$"Running/Done Buttons/SnG".disabled = true
+		$Running/ProcessDetails/Heeho/anims.play("RESET")
+		if OS.is_process_running(pypid):
+			OS.kill(pypid)
+		$SecondRefresh.disconnect("timeout", _final_refreshed)
+		$SecondRefresh.connect("timeout", _initial_refresh)
+		$Done/anims.play("second")
+	return
+
 func _create_table() -> void:
 	for i in range(len(data)):
 		for j in range(len(data[i])):
 			get_node("Running/Scoreboard/" + str(i * 14 + j)).text = str(data[i][j])
 	return
+
+func _done_anim_finish(anim_name: StringName) -> void:
+	if queue_finish:
+		get_tree().quit()
+	else:
+		$Initialise.show()
+		$Running.hide()
